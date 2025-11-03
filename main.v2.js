@@ -2,20 +2,6 @@
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzWEhThIS13xqaFqMIESmZh5L3VsiY4oAuhgFaCxYvYqbvMruQM921ZBQ1_rAv5BzYRSw/exec";
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-// ★ 【要編集】社員リストをここにハードコードする ★
-// ★ スプシのA列と必ず一致させてください       ★
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-const EMPLOYEE_LIST = [
-    // "名前を選んでください", ← ★ この行を削除しました
-    "水瀬 瑠夏", 
-    "社員A",     
-    "社員B",     
-    "社員C"      
-];
-// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-
-
 // --- グローバル変数 ---
 let currentLoginName = "";
 const LOGIN_STORAGE_KEY = "vcrp_app_login_name";
@@ -40,10 +26,7 @@ const tabContents = document.querySelectorAll(".tab-content");
 
 // --- 起動時の処理 ---
 document.addEventListener("DOMContentLoaded", () => {
-    // ハードコードしたリストで先に画面を構築
-    updateNameSelect(EMPLOYEE_LIST);
-    
-    // 1. GASから「ランキングデータのみ」を取得
+    // 1. アプリ起動時に初期データをGASから取得
     fetchInitialData();
 
     // 2. ログインフォームのイベント
@@ -80,11 +63,15 @@ async function fetchInitialData() {
         const result = await response.json();
         if (result.status === "error") throw new Error(result.message);
 
-        updateRanking(result.data);
+        const data = result.data; 
+        updateNameSelect(data.names);
+        updateRanking(data.ranking);
 
     } catch (error) { 
-        showError("ランキングの読み込みに失敗しました: " + error.message, "main");
+        showError("初期データの読み込みに失敗しました: " + error.message, "login");
+        showError("初期データの読み込みに失敗しました: " + error.message, "main");
     } finally {
+        // ログイン状態をチェック
         checkLoginStatus();
     }
 }
@@ -94,7 +81,7 @@ async function fetchInitialData() {
  */
 function checkLoginStatus() {
     const savedName = localStorage.getItem(LOGIN_STORAGE_KEY);
-    if (savedName && EMPLOYEE_LIST.includes(savedName)) {
+    if (savedName) {
         currentLoginName = savedName;
         currentUserName.textContent = savedName;
         showMainScreen();
@@ -224,11 +211,8 @@ function handleTabClick(e) {
 
 // --- 画面更新用のヘルパー関数 ---
 
-/**
- * 社員名リストをドロップダウンに設定
- */
 function updateNameSelect(names) {
-    loginNameSelect.innerHTML = ""; // クリア
+    loginNameSelect.innerHTML = ""; 
     
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
@@ -245,9 +229,6 @@ function updateNameSelect(names) {
     }
 }
 
-/**
- * ランキング（Top 3）を表示
- */
 function updateRanking(rankingData) {
     rankingList.innerHTML = "";
 
