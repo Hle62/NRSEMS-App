@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ピック数 集計アプリ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>ピック数 集計アプリ</h1>
+    </header>
+
+    <main>
+        <section class="card">
+            <h2>ピック数入力</h2>
+            <form id="picksForm">
+                <div class="form-group">
+                    <label for="nameSelect">あなたの名前:</label>
+                    <select id="nameSelect" required>
+                        <option value="">読み込み中...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="picksInput">ピック数:</label>
+                    <input type="number" id="picksInput" placeholder="数値を入力" required>
+                </div>
+                <button type="submit" id="submitButton">送信</button>
+                <p id="loadingMessage" class="hidden">送信中...</p>
+                <p id="errorMessage" class="hidden"></p>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>今月のランキング (Top 3)</h2>
+            <ol id="rankingList">
+                <li>読み込み中...</li>
+            </ol>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
