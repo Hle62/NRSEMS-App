@@ -78,7 +78,7 @@ async function fetchInitialData() {
         showError("初期データの読み込みに失敗しました: " + error.message, "login");
         showError("初期データの読み込みに失敗しました: " + error.message, "main");
     } finally {
-        // ★ 失敗しても成功しても、必ず画面切り替え処理を呼ぶ
+        // 失敗しても成功しても、必ず画面切り替え処理を呼ぶ
         checkLoginStatus();
     }
 }
@@ -236,6 +236,10 @@ function updateNameSelect(names) {
     }
 }
 
+/**
+ * ランキング（Top 3）を表示
+ * ★★★ この関数を修正 ★★★
+ */
 function updateRanking(rankingData) {
     rankingList.innerHTML = "";
 
@@ -248,7 +252,8 @@ function updateRanking(rankingData) {
 
     top3.forEach((item) => {
         const li = document.createElement("li");
-        li.innerHTML = `${item.name} <span>${item.picks} ピック</span>`;
+        // ★ 単位を「ピック」から「人」に変更
+        li.innerHTML = `${item.name} <span>${item.picks} 人</span>`;
         rankingList.appendChild(li);
     });
 }
