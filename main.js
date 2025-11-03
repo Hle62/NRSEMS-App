@@ -1,4 +1,4 @@
-// ▼▼▼▼▼ ご提示いただいたURL ▼▼▼▼▼
+// ▼▼▼▼▼ GASのURL（変更不要） ▼▼▼▼▼
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzWEhThIS13xqaFqMIESmZh5L3VsiY4oAuhgFaCxYvYqbvMruQM921ZBQ1_rAv5BzYRSw/exec";
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
@@ -21,7 +21,7 @@ const picksForm = document.getElementById("picksForm");
 const picksInput = document.getElementById("picksInput");
 const submitButton = document.getElementById("submitButton");
 const rankingList = document.getElementById("rankingList");
-const loadingMessage = document.getElementById("loadingMessage");
+// ★★★ loadingMessage の取得を削除 ★★★
 const errorMessage = document.getElementById("errorMessage");
 const currentUserName = document.getElementById("currentUserName");
 const logoutButton = document.getElementById("logoutButton");
@@ -132,7 +132,6 @@ async function handleSubmit(e) {
         const response = await fetch(GAS_API_URL, {
             method: "POST",
             mode: "cors",
-            // CORSエラー対策のため、headers: {} ブロックを削除
             body: JSON.stringify(postData), 
         });
 
@@ -229,15 +228,16 @@ function showMainScreen() {
 
 /**
  * 送信中・エラー表示の制御
+ * ★★★ この関数をまるごと修正 ★★★
  */
 function setLoading(isLoading) {
     if (isLoading) {
         submitButton.disabled = true;
-        loadingMessage.classList.remove("hidden");
+        submitButton.textContent = "送信中..."; // ボタンのテキストを変更
         errorMessage.classList.add("hidden"); // エラーを隠す
     } else {
         submitButton.disabled = false;
-        loadingMessage.classList.add("hidden");
+        submitButton.textContent = "送信"; // ボタンのテキストを戻す
     }
 }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ピック数 集計アプリ</title>
     <link rel="stylesheet" href="style.css">
@@ -36,7 +36,7 @@
                 <h2>ピック数入力</h2>
                 <div class="user-info">
                     ログイン中: <span id="currentUserName"></span>
-                    <button id="logoutButton" class="text-button">（名前を変更する）</button>
+                    <button id="logoutButton" class="text-button">ログアウト</button>
                 </div>
 
                 <form id="picksForm">
@@ -45,7 +45,6 @@
                         <input type="number" id="picksInput" placeholder="数値を入力" required>
                     </div>
                     <button type="submit" id="submitButton">送信</button>
-                    <p id="loadingMessage" class="hidden">送信中...</p>
                     <p id="errorMessage" class="error-message hidden"></p>
                 </form>
             </section>
