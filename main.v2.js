@@ -115,7 +115,7 @@ async function handleSubmit(e) {
         return;
     }
     
-    setLoading(true); // 1. 「送信中...」開始
+    setLoading(true); // 1. 「送信中...」開始 (エラーを隠す)
 
     try {
         const postData = {
@@ -139,15 +139,14 @@ async function handleSubmit(e) {
         setLoading(false); // ★ 3. 「送信中...」をすぐに解除
         
         // ★ 4. バックグラウンドでランキングを再取得
-        showError("送信完了。ランキングを更新します...", "main"); // ユーザーに通知
+        // showError("送信完了。ランキングを更新します...", "main"); // ← ★ 削除
         await fetchInitialData(); // doGetを再度呼び出し、ランキングと名前を更新
-        showError("", "main"); // 通知をクリア
+        // showError("", "main"); // ← ★ 削除 (setLoading(true)で隠れているので不要)
 
     } catch (error) {
         showError("送信に失敗しました: " + error.message, "main");
         setLoading(false); // ★ エラー時も「送信中」を解除
     }
-    // ★ 'finally' ブロックは不要になった
 }
 
 /**
