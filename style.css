@@ -1,190 +1,53 @@
-/* 基本設定 */
-body {
-    font-family: sans-serif;
-    background-color: #f4f7f6;
-    color: #333;
-    margin: 0;
-    padding: 1rem;
-}
-header {
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #444;
-}
+/* --- タブ切り替え用のスタイル --- */
 
-/* カードレイアウト */
-.card {
+.tab-nav {
+    display: flex;
     background-color: #fff;
-    border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
     max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 0 auto 1.5rem auto; /* headerの下、cardの上 */
+    border-radius: 8px;
+    overflow: hidden; /* 角丸を効かせるため */
 }
 
-/* フォーム */
-.form-group {
-    margin-bottom: 1rem;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 0.8rem;
-    box-sizing: border-box; /* paddingを含めて幅100%に */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-
-/* メインのボタン (★ 変更: width:100%を削除) */
-button {
-    /* width: 100%; */ /* ← .form-actions に移動 */
+.tab-btn {
+    flex: 1; /* 均等幅 */
     padding: 1rem;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
     font-size: 1rem;
     font-weight: bold;
+    color: #007bff;
+    background-color: #fff;
+    border: none;
+    border-bottom: 3px solid transparent; /* 非アクティブ時 */
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.2s;
+    width: 100%; /* buttonの基本スタイルを上書き */
+    border-radius: 0; /* buttonの基本スタイルを上書き */
 }
-button:hover {
-    background-color: #0056b3;
+
+/* buttonのhoverスタイルを上書き */
+.tab-btn:hover {
+    background-color: #f4f7f6;
 }
-button:disabled {
+.tab-btn:disabled {
     background-color: #aaa;
     cursor: not-allowed;
 }
 
-/* ログイン中のユーザー情報 */
-.user-info {
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
-    color: #555;
-    background-color: #f0f0f0;
-    padding: 0.8rem 1rem;
-    border-radius: 4px;
-}
-#currentUserName {
-    font-weight: bold;
-    font-size: 1rem;
-    color: #000;
+
+/* アクティブなタブボタン */
+.tab-btn.active {
+    color: #0056b3;
+    border-bottom-color: #007bff; /* アクティブな下線 */
+    background-color: #fff;
 }
 
-/* テキストボタン (ログアウト用) */
-.text-button {
-    background: none;
-    border: none;
-    color: #007bff;
-    cursor: pointer;
-    padding: 0;
-    font-size: 0.8rem;
-    width: auto; /* 幅を自動に */
-    margin-left: 0.5rem;
-}
-.text-button:hover {
-    text-decoration: underline;
-    background: none;
+/* タブコンテンツ */
+.tab-content {
+    display: none; /* デフォルトは非表示 */
 }
 
-
-/* ランキング */
-#rankingList {
-    padding-left: 2rem;
-}
-#rankingList li {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-#rankingList li span {
-    font-weight: bold;
-    color: #007bff;
-    margin-left: 0.5rem;
-}
-
-/* 汎用ヘルパー */
-.hidden {
-    display: none;
-}
-.error-message {
-    color: #d93025;
-    font-weight: bold;
-    margin-top: 1rem;
-}
-
-/* --- ピック数加算ボタン用のスタイル --- */
-
-.input-with-buttons {
-    display: flex;
-    flex-direction: column; /* 縦並び */
-    gap: 0.5rem; /* 隙間 */
-}
-
-.quick-add-buttons {
-    display: flex;
-    gap: 0.5rem; /* ボタン同士の隙間 */
-}
-
-/* 加算ボタンのスタイル */
-.quick-add-btn {
-    /* デフォルトのbuttonスタイルを上書き */
-    width: auto; /* 幅を自動に */
-    flex: 1; /* 均等に幅を分ける */
-    padding: 0.7rem 0.5rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-    background-color: #e9ecef; /* 背景色 */
-    color: #495057; /* 文字色 */
-    border: 1px solid #ced4da; /* 枠線 */
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.quick-add-btn:hover {
-    background-color: #d1d9e0; /* ホバー色 */
-}
-
-/* type="number" のスピンボタンを非表示 (任意) */
-/* Chrome, Safari */
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
-}
-
-
-/* ★★★ ここから追加 ★★★ */
-
-/* 送信・リセットボタンのコンテナ */
-.form-actions {
-    display: flex;
-    gap: 0.5rem; /* ボタン間の隙間 */
-}
-
-/* .form-actions 内のボタンに width:100% を適用 */
-.form-actions button {
-    flex: 1; /* 均等に幅を分ける */
-    width: 100%;
-}
-
-/* リセットボタンのスタイル */
-#resetButton {
-    background-color: #6c757d; /* グレー */
-    color: white;
-    border: none;
-}
-#resetButton:hover {
-    background-color: #5a6268;
+/* アクティブなタブコンテンツ */
+.tab-content.active {
+    display: block; /* アクティブなものだけ表示 */
 }

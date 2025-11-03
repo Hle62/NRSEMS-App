@@ -24,9 +24,12 @@ const rankingList = document.getElementById("rankingList");
 const errorMessage = document.getElementById("errorMessage");
 const currentUserName = document.getElementById("currentUserName");
 const logoutButton = document.getElementById("logoutButton");
-
 const resetButton = document.getElementById("resetButton");
 const quickAddButtons = document.querySelectorAll(".quick-add-btn");
+
+// ★★★ タブ関連のDOM取得 ★★★
+const tabButtons = document.querySelectorAll(".tab-btn");
+const tabContents = document.querySelectorAll(".tab-content");
 
 // --- 起動時の処理 ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -49,6 +52,11 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // 6. リセットボタンのイベント
     resetButton.addEventListener("click", handleReset);
+
+    // ★★★ 7. タブ切り替えのイベント ★★★
+    tabButtons.forEach(button => {
+        button.addEventListener("click", handleTabClick);
+    });
 });
 
 /**
@@ -63,17 +71,10 @@ async function fetchInitialData() {
         if (result.status === "error") throw new Error(result.message);
 
         const data = result.data;
-
-        // 1-1. 社員名リストをドロップダウンに設定
         updateNameSelect(data.names);
-        
-        // 1-2. ランキングを表示
-        updateRanking(data.ranking);
-        
-        // 1-3. ログイン情報をチェック
+        updateRanking(data.ranking); // ランキングは裏で更新しておく
         checkLoginStatus();
 
-    // ★★★ エラーを修正: catch (error { ではなく (error) ★★★
     } catch (error) { 
         showError("初期データの読み込みに失敗しました: " + error.message, "login");
         showError("初期データの読み込みに失敗しました: " + error.message, "main");
@@ -124,6 +125,12 @@ async function handleSubmit(e) {
         return;
     }
     
+    // ピック数が0以下や空欄でないかチェック
+    if (!picks || parseInt(picks, 10) <= 0) {
+        showError("ピック数は1以上の数値を入力してください。", "main");
+        return;
+    }
+    
     setLoading(true);
 
     try {
@@ -166,17 +173,11 @@ function handleLogout() {
  * 5. ピック数クイック追加
  */
 function handleQuickAdd(e) {
-    // クリックされたボタンの data-value の値（"1", "5", "10"）を取得
     const valueToAdd = parseInt(e.target.dataset.value, 10);
-    
-    // 現在の入力値を取得
     const currentPicks = parseInt(picksInput.value, 10);
-
     if (isNaN(currentPicks)) {
-        // 入力欄が空か数値でない場合は、ボタンの値で上書き
         picksInput.value = valueToAdd;
     } else {
-        // 現在の値に加算する
         picksInput.value = currentPicks + valueToAdd;
     }
 }
@@ -185,8 +186,36 @@ function handleQuickAdd(e) {
  * 6. リセット処理
  */
 function handleReset() {
-    picksInput.value = ""; // 入力欄を空にする
-    showError("", "main"); // エラーメッセージも消す
+    picksInput.value = "";
+    showError("", "main");
+}
+
+/**
+ * ★★★ 7. タブ切り替え処理 ★★★
+ */
+function handleTabClick(e) {
+    const clickedTab = e.currentTarget.dataset.tab; // "input" or "ranking"
+
+    // すべてのボタンから "active" を削除
+    tabButtons.forEach(btn => {
+        btn.classList.remove("active");
+    });
+    // クリックされたボタンに "active" を追加
+    e.currentTarget.classList.add("active");
+
+    // すべてのコンテンツを非表示
+    tabContents.forEach(content => {
+        content.classList.remove("active");
+    });
+    
+    // 対応するコンテンツを表示
+    const contentToShow = document.getElementById(clickedTab + "TabContent");
+    contentToShow.classList.add("active");
+    
+    // ランキングタブに切り替えたらエラーを消す
+    if (clickedTab === 'ranking') {
+        showError("", "main");
+    }
 }
 
 
@@ -215,7 +244,7 @@ function updateNameSelect(names) {
  * ランキング（Top 3）を表示
  */
 function updateRanking(rankingData) {
-    rankingList.innerHTML = "";
+    rankingList.innerHTML = ""; // 常にクリア
 
     if (!rankingData || rankingData.length === 0) {
         rankingList.innerHTML = "<li>データがありません</li>";
@@ -236,9 +265,22 @@ function showLoginScreen() {
     loginScreen.classList.remove("hidden");
     mainScreen.classList.add("hidden");
 }
+
+/**
+ * 画面切り替え (メイン画面表示)
+ * ★★★ この関数を修正 ★★★
+ */
 function showMainScreen() {
     loginScreen.classList.add("hidden");
     mainScreen.classList.remove("hidden");
+    
+    // ★ メイン画面表示時は必ず「入力」タブをアクティブにする
+    tabButtons.forEach(btn => btn.classList.remove("active"));
+    document.querySelector('.tab-btn[data-tab="input"]').classList.add("active");
+
+    tabContents.forEach(content => content.classList.remove("active"));
+    document.getElementById("inputTabContent").classList.add("active");
+
     showError("", "main");
     picksInput.value = "";
 }
@@ -259,6 +301,7 @@ function setLoading(isLoading) {
 
 // type: "login" | "main"
 function showError(message, type) {
+    // "main" のエラーは #errorMessage に表示
     const element = (type === "login") ? loginErrorMessage : errorMessage;
     if (message) {
         element.textContent = "※ " + message;
