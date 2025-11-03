@@ -1,92 +1,91 @@
 /* 基本設定 */
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* プロフェッショナルなフォント */
+    font-family: sans-serif;
+    /* ★ 色変更 */
     background-color: #121212; /* ダークモードの背景 */
     color: #E0E0E0; /* 明るいテキスト色 */
     margin: 0;
     padding: 1rem;
-    line-height: 1.6;
 }
-
 header {
     text-align: center;
-    margin-bottom: 2rem; /* 少し広めに */
+    margin-bottom: 1rem;
+    /* ★ 色変更 */
     color: #FFFFFF; /* 白いヘッダーテキスト */
-    font-size: 2.2rem; /* 少し大きく */
-    font-weight: 700; /* 太字 */
-    letter-spacing: 0.05em; /* 文字間隔 */
 }
 
-/* カードレイアウト */
+/* カード（ピック数入力など）の幅 */
 .card {
+    /* ★ 色変更 */
     background-color: #1E1E1E; /* カードの背景色 */
-    border-radius: 10px; /* 少し丸みを強く */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* 影を強調 */
-    padding: 2rem; /* パディングを増やす */
-    margin-bottom: 1.8rem;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #333; /* 軽いボーダーで引き締め */
+    border: 1px solid #333; /* 軽いボーダー */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4); /* 影を調整 */
+    
+    /* レイアウトは元のまま */
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    max-width: 500px; 
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
 /* フォーム */
 .form-group {
-    margin-bottom: 1.5rem; /* 間隔を広めに */
+    margin-bottom: 1rem;
 }
 .form-group label {
     display: block;
-    margin-bottom: 0.6rem;
-    font-weight: 600; /* 少し太字 */
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    /* ★ 色変更 */
     color: #B0B0B0; /* グレー系のラベル */
 }
 .form-group input,
 .form-group select {
     width: 100%;
-    padding: 0.9rem; /* パディングを増やす */
-    box-sizing: border-box;
+    padding: 0.8rem;
+    box-sizing: border-box; 
+    border-radius: 4px;
+    
+    /* ★ 色変更 */
     border: 1px solid #444; /* ダーク系のボーダー */
-    border-radius: 6px; /* 少し丸みを強く */
     background-color: #2D2D2D; /* 入力欄の背景 */
     color: #FFFFFF; /* 入力テキストの色 */
-    font-size: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 1rem; /* EMSデザインから継承 */
 }
+/* ★ 色変更 (フォーカス) */
 .form-group input:focus,
 .form-group select:focus {
     border-color: #FF0000; /* フォーカス時に赤 */
     box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.3); /* 赤い影 */
-    outline: none; /* デフォルトのアウトラインを消す */
+    outline: none; 
 }
-.form-group select {
-    appearance: none; /* デフォルトの矢印を消す */
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23b0b0b0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-6.5%200-12.3%203.2-16.1%208.5-3.9%205.3-4.3%2012.7-1.1%2018.5l132.8%20165.6c3.2%205%208.2%207.7%2013.9%207.7s10.7-2.7%2013.9-7.7L288.4%2090c3.2-5.8%202.8-13.2-1.1-18.5z%22%2F%3E%3C%2Fsvg%3E'); /* カスタム矢印 */
-    background-repeat: no-repeat;
-    background-position: right 0.7em top 50%;
-    background-size: 0.65em auto;
-}
+
 
 /* メインのボタン */
 button {
-    padding: 1rem 1.5rem; /* パディングを増やす */
-    background-color: #FF0000; /* 赤いボタン */
-    color: #FFFFFF; /* 白いテキスト */
-    border: none;
-    border-radius: 6px; /* 丸みを強く */
-    font-size: 1.05rem; /* 少し大きく */
+    padding: 1rem;
+    border-radius: 4px;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-    text-transform: uppercase; /* 大文字 */
-    letter-spacing: 0.03em;
+    transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    
+    /* ★ 色変更 (赤アクセント) */
+    background-color: #FF0000;
+    color: white;
+    border: none;
 }
 button:hover {
-    background-color: #CC0000; /* ホバーで少し暗い赤 */
-    transform: translateY(-2px); /* 少し浮き上がる */
-    box-shadow: 0 6px 15px rgba(255,0,0,0.3);
+    /* ★ 色変更 */
+    background-color: #CC0000;
+    box-shadow: 0 4px 10px rgba(255,0,0,0.3); /* EMSデザインから継承 */
+    transform: translateY(-2px); /* EMSデザインから継承 */
 }
 button:disabled {
-    background-color: #444; /* 無効時は暗いグレー */
+    /* ★ 色変更 */
+    background-color: #444;
     color: #999;
     cursor: not-allowed;
     transform: none;
@@ -95,19 +94,19 @@ button:disabled {
 
 /* ログイン中のユーザー情報 */
 .user-info {
-    margin-bottom: 1.8rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    
+    /* ★ 色変更 */
     color: #B0B0B0;
-    background-color: #252525; /* 暗めの背景 */
-    padding: 1rem 1.2rem;
-    border-radius: 6px;
-    display: flex; /* Flexboxで配置 */
-    justify-content: space-between; /* 左右に配置 */
-    align-items: center; /* 垂直中央揃え */
+    background-color: #252525;
 }
 #currentUserName {
     font-weight: bold;
-    font-size: 1.05rem;
+    font-size: 1rem;
+    /* ★ 色変更 */
     color: #FFFFFF;
 }
 
@@ -115,43 +114,45 @@ button:disabled {
 .text-button {
     background: none;
     border: none;
-    color: #ADD8E6; /* 明るい青 */
     cursor: pointer;
-    padding: 0.2rem 0.5rem; /* クリックしやすいようにパディング */
-    font-size: 0.85rem;
-    width: auto;
-    margin-left: 0.8rem;
-    text-decoration: none; /* 下線をなくす */
-    transition: color 0.3s, text-decoration 0.3s;
+    padding: 0;
+    font-size: 0.8rem;
+    width: auto; 
+    margin-left: 0.5rem;
+    
+    /* ★ 色変更 */
+    color: #ADD8E6; /* 明るい青 */
+    transition: color 0.3s;
 }
 .text-button:hover {
-    color: #FFFFFF; /* ホバーで白 */
-    text-decoration: underline; /* 下線を表示 */
+    text-decoration: underline;
     background: none;
+    /* ★ 色変更 */
+    color: #FFFFFF;
 }
 
 
 /* ランキング */
 #rankingList {
-    padding-left: 1.5rem; /* パディングを調整 */
-    color: #E0E0E0;
+    padding-left: 2rem;
 }
 #rankingList li {
-    font-size: 1.2rem; /* 少し大きく */
-    margin-bottom: 0.7rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
     font-weight: 500;
-    list-style-type: decimal; /* 数字リスト */
+    /* ★ 色変更 */
     color: #B0B0B0; /* デフォルトの色 */
 }
-#rankingList li:nth-child(1) { color: #FFD700; font-weight: bold; } /* 1位は金色 */
-#rankingList li:nth-child(2) { color: #C0C0C0; font-weight: bold; } /* 2位は銀色 */
-#rankingList li:nth-child(3) { color: #CD7F32; font-weight: bold; } /* 3位は銅色 */
+/* ★ 色変更 (ランキング) */
+#rankingList li:nth-child(1) { color: #FFD700; font-weight: bold; } /* 1位 */
+#rankingList li:nth-child(2) { color: #C0C0C0; font-weight: bold; } /* 2位 */
+#rankingList li:nth-child(3) { color: #CD7F32; font-weight: bold; } /* 3位 */
 
 #rankingList li span {
     font-weight: bold;
+    margin-left: 0.5rem;
+    /* ★ 色変更 */
     color: #FF0000; /* ピック数は赤 */
-    margin-left: 0.7rem;
-    font-size: 1.3rem; /* ピック数を強調 */
 }
 
 /* 汎用ヘルパー (画面を隠す) */
@@ -159,11 +160,10 @@ button:disabled {
     display: none;
 }
 .error-message {
-    color: #FF6347; /* 薄い赤のエラーメッセージ */
     font-weight: bold;
-    margin-top: 1.2rem;
-    font-size: 0.95rem;
-    text-align: center;
+    margin-top: 1rem;
+    /* ★ 色変更 */
+    color: #FF6347; /* 薄い赤のエラーメッセージ */
 }
 
 /* --- ピック数加算ボタン用のスタイル --- */
@@ -171,33 +171,37 @@ button:disabled {
 .input-with-buttons {
     display: flex;
     flex-direction: column; 
-    gap: 0.8rem; /* 間隔を少し広めに */
+    gap: 0.5rem; 
 }
 
 .quick-add-buttons {
     display: flex;
-    gap: 0.8rem; 
+    gap: 0.5rem; 
 }
 
 .quick-add-btn {
     width: auto; 
     flex: 1; 
-    padding: 0.8rem 0.5rem;
-    font-size: 0.95rem;
+    padding: 0.7rem 0.5rem;
+    font-size: 0.9rem;
     font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    border-radius: 4px; /* 元のスタイルに戻す */
+    
+    /* ★ 色変更 */
     background-color: #383838; /* 暗めのグレー */
     color: #FFFFFF; /* 白いテキスト */
     border: 1px solid #555; /* ボーダー */
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .quick-add-btn:hover {
+    /* ★ 色変更 */
     background-color: #505050; /* ホバーで少し明るく */
     border-color: #FF0000; /* ホバーで赤のボーダー */
 }
 
+/* スピンボタン非表示 */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none;
@@ -210,8 +214,7 @@ input[type=number] {
 /* 送信・リセットボタンのコンテナ */
 .form-actions {
     display: flex;
-    gap: 0.8rem; /* ボタン間の隙間 */
-    margin-top: 1.5rem;
+    gap: 0.5rem; 
 }
 
 .form-actions button {
@@ -221,57 +224,71 @@ input[type=number] {
 
 /* リセットボタンのスタイル */
 #resetButton {
+    border: none;
+    /* ★ 色変更 */
     background-color: #555; /* グレー */
     color: white;
-    border: none;
 }
 #resetButton:hover {
-    background-color: #777; /* ホバーで少し明るく */
+    /* ★ 色変更 */
+    background-color: #777;
 }
 
-/* --- タブ切り替え用のスタイル --- */
-
+/* ★★★ タブ（入力、ランキング）の幅 ★★★ */
 .tab-nav {
     display: flex;
-    background-color: #1E1E1E; /* カードと同じ背景色 */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    max-width: 500px;
-    margin: 0 auto 1.8rem auto; /* 間隔を調整 */
-    border-radius: 10px; /* カードと同じ丸み */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4); /* 影を調整 */
+    max-width: 500px; 
+    margin: 0 auto 1.5rem auto; 
+    border-radius: 8px;
     overflow: hidden; 
+    
+    /* ★ 色変更 */
+    background-color: #1E1E1E; /* カードと同じ背景色 */
     border: 1px solid #333; /* カードと同じボーダー */
 }
 
 .tab-btn {
     flex: 1; 
-    padding: 1.2rem; /* パディングを増やす */
-    font-size: 1.05rem;
+    padding: 1rem;
+    font-size: 1rem;
     font-weight: bold;
-    color: #B0B0B0; /* 非アクティブなタブの文字色 */
-    background-color: #1E1E1E;
     border: none;
     border-bottom: 3px solid transparent; 
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.2s;
     width: 100%;
     border-radius: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
+    
+    /* ★ 色変更 */
+    color: #B0B0B0; /* 非アクティブなタブの文字色 */
+    background-color: #1E1E1E;
 }
 
 .tab-btn:hover {
+    /* ★ 色変更 */
     background-color: #2D2D2D; /* ホバーで少し明るく */
     color: #FFFFFF;
 }
 .tab-btn:disabled {
+    /* ★ 色変更 */
     background-color: #222;
     cursor: not-allowed;
     color: #666;
 }
 
-/* アクティブなタブボタン */
 .tab-btn.active {
+    background-color: #1E1E1E; /* EMSデザインから変更 */
+    /* ★ 色変更 */
     color: #FF0000; /* アクティブなタブは赤 */
     border-bottom-color: #FF0000; /* 赤い下線 */
-    background-color: #2D2D2D; /* 少し明るい背景 */
+}
+
+/* タブコンテンツ */
+.tab-content {
+    display: none; 
+}
+
+.tab-content.active {
+    display: block; 
 }
