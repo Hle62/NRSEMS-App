@@ -42,9 +42,9 @@ header {
     border-radius: 4px;
 }
 
-/* メインのボタン */
+/* メインのボタン (★ 変更: width:100%を削除) */
 button {
-    width: 100%;
+    /* width: 100%; */ /* ← .form-actions に移動 */
     padding: 1rem;
     background-color: #007bff;
     color: white;
@@ -162,4 +162,29 @@ input[type=number]::-webkit-outer-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+
+/* ★★★ ここから追加 ★★★ */
+
+/* 送信・リセットボタンのコンテナ */
+.form-actions {
+    display: flex;
+    gap: 0.5rem; /* ボタン間の隙間 */
+}
+
+/* .form-actions 内のボタンに width:100% を適用 */
+.form-actions button {
+    flex: 1; /* 均等に幅を分ける */
+    width: 100%;
+}
+
+/* リセットボタンのスタイル */
+#resetButton {
+    background-color: #6c757d; /* グレー */
+    color: white;
+    border: none;
+}
+#resetButton:hover {
+    background-color: #5a6268;
 }
