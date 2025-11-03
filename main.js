@@ -7,11 +7,11 @@ const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzWEhThIS13xqaFqMIE
 // ★ スプシのA列と必ず一致させてください       ★
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 const EMPLOYEE_LIST = [
-    "水瀬 瑠夏", // スプシのA2
-    "社員A",     // スプシのA3
-    "社員B",     // スプシのA4
-    "社員C"      // スプシのA5 (必要なだけ追加)
-    // (例: "田中 太郎", "鈴木 一郎")
+    // "名前を選んでください", ← ★ この行を削除しました
+    "水瀬 瑠夏", 
+    "社員A",     
+    "社員B",     
+    "社員C"      
 ];
 // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
 
@@ -40,7 +40,7 @@ const tabContents = document.querySelectorAll(".tab-content");
 
 // --- 起動時の処理 ---
 document.addEventListener("DOMContentLoaded", () => {
-    // ★ 対策②：ハードコードしたリストで先に画面を構築
+    // ハードコードしたリストで先に画面を構築
     updateNameSelect(EMPLOYEE_LIST);
     
     // 1. GASから「ランキングデータのみ」を取得
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * 1. アプリ起動時に初期データをGASから取得
- * ★ 対策②：社員リスト取得のロジックを削除し、ランキング取得のみにする
  */
 async function fetchInitialData() {
     try {
@@ -81,13 +80,11 @@ async function fetchInitialData() {
         const result = await response.json();
         if (result.status === "error") throw new Error(result.message);
 
-        // result.data が「ランキング配列」そのものになる
         updateRanking(result.data);
 
     } catch (error) { 
         showError("ランキングの読み込みに失敗しました: " + error.message, "main");
     } finally {
-        // ログイン状態をチェック（これはGAS通信と無関係に実行）
         checkLoginStatus();
     }
 }
@@ -97,13 +94,11 @@ async function fetchInitialData() {
  */
 function checkLoginStatus() {
     const savedName = localStorage.getItem(LOGIN_STORAGE_KEY);
-    // ★ 対策②：ハードコードしたリストに名前が存在するか確認
     if (savedName && EMPLOYEE_LIST.includes(savedName)) {
         currentLoginName = savedName;
         currentUserName.textContent = savedName;
         showMainScreen();
     } else {
-        // 保存された名前が無効か、リストにない場合はログアウト
         localStorage.removeItem(LOGIN_STORAGE_KEY);
         showLoginScreen();
     }
@@ -164,7 +159,6 @@ async function handleSubmit(e) {
         if (result.status === "error") throw new Error(result.message);
 
         picksInput.value = "";
-        // ★ 対策②：doPostからも最新のランキングが返ってくる
         updateRanking(result.data);
 
     } catch (error) {
@@ -232,7 +226,6 @@ function handleTabClick(e) {
 
 /**
  * 社員名リストをドロップダウンに設定
- * (★ 対策②： "読み込み中..." を削除)
  */
 function updateNameSelect(names) {
     loginNameSelect.innerHTML = ""; // クリア
