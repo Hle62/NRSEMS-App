@@ -1,6 +1,5 @@
-// ▼▼▼▼▼ GASのURL（変更不要） ▼▼▼▼▼
+// GASURL
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzWEhThIS13xqaFqMIESmZh5L3VsiY4oAuhgFaCxYvYqbvMruQM921ZBQ1_rAv5BzYRSw/exec";
-// ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
 // --- グローバル変数 ---
 let currentLoginName = "";
@@ -41,7 +40,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * 1. アプリ起動時に初期データをGASから取得
- * (変更なし)
  */
 async function fetchInitialData() {
     try {
@@ -65,7 +63,6 @@ async function fetchInitialData() {
 
 /**
  * 1-3. ログイン状態をチェックし、画面を切り替える
- * (変更なし)
  */
 function checkLoginStatus() {
     const savedName = localStorage.getItem(LOGIN_STORAGE_KEY);
@@ -81,7 +78,6 @@ function checkLoginStatus() {
 
 /**
  * 2. ログイン処理
- * (変更なし)
  */
 function handleLogin(e) {
     e.preventDefault();
@@ -98,7 +94,6 @@ function handleLogin(e) {
 
 /**
  * 3. フォーム送信（ピック数送信）の処理
- * ★★★ この関数を修正 ★★★
  */
 async function handleSubmit(e) {
     e.preventDefault();
@@ -139,19 +134,16 @@ async function handleSubmit(e) {
         setLoading(false); // ★ 3. 「送信中...」をすぐに解除
         
         // ★ 4. バックグラウンドでランキングを再取得
-        // showError("送信完了。ランキングを更新します...", "main"); // ← ★ 削除
         await fetchInitialData(); // doGetを再度呼び出し、ランキングと名前を更新
-        // showError("", "main"); // ← ★ 削除 (setLoading(true)で隠れているので不要)
 
     } catch (error) {
         showError("送信に失敗しました: " + error.message, "main");
-        setLoading(false); // ★ エラー時も「送信中」を解除
+        setLoading(false);
     }
 }
 
 /**
  * 4. ログアウト処理
- * (変更なし)
  */
 function handleLogout() {
     localStorage.removeItem(LOGIN_STORAGE_KEY);
@@ -161,7 +153,6 @@ function handleLogout() {
 
 /**
  * 5. ピック数クイック追加
- * (変更なし)
  */
 function handleQuickAdd(e) {
     const valueToAdd = parseInt(e.target.dataset.value, 10);
@@ -175,7 +166,6 @@ function handleQuickAdd(e) {
 
 /**
  * 6. リセット処理
- * (変更なし)
  */
 function handleReset() {
     picksInput.value = "";
@@ -184,7 +174,6 @@ function handleReset() {
 
 /**
  * 7. タブ切り替え処理
- * (変更なし)
  */
 function handleTabClick(e) {
     const clickedTab = e.currentTarget.dataset.tab;
@@ -208,7 +197,6 @@ function handleTabClick(e) {
 
 
 // --- 画面更新用のヘルパー関数 ---
-// (変更なし)
 function updateNameSelect(names) {
     loginNameSelect.innerHTML = ""; 
     

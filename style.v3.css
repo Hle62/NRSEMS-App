@@ -14,14 +14,12 @@ header {
     color: #FFFFFF; /* 白いヘッダーテキスト */
 }
 
-/* カード（ピック数入力など）の幅 */
+/* カードの幅 */
 .card {
-    /* ★ 色変更 */
     background-color: #1E1E1E; /* カードの背景色 */
     border: 1px solid #333; /* 軽いボーダー */
     box-shadow: 0 2px 5px rgba(0,0,0,0.4); /* 影を調整 */
     
-    /* レイアウトは元のまま */
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
@@ -38,7 +36,6 @@ header {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    /* ★ 色変更 */
     color: #B0B0B0; /* グレー系のラベル */
 }
 .form-group input,
@@ -48,13 +45,11 @@ header {
     box-sizing: border-box; 
     border-radius: 4px;
     
-    /* ★ 色変更 */
     border: 1px solid #444; /* ダーク系のボーダー */
     background-color: #2D2D2D; /* 入力欄の背景 */
     color: #FFFFFF; /* 入力テキストの色 */
-    font-size: 1rem; /* EMSデザインから継承 */
+    font-size: 1rem;
 }
-/* ★ 色変更 (フォーカス) */
 .form-group input:focus,
 .form-group select:focus {
     border-color: #FF0000; /* フォーカス時に赤 */
@@ -72,19 +67,16 @@ button {
     cursor: pointer;
     transition: background-color 0.2s, box-shadow 0.2s, transform 0.2s;
     
-    /* ★ 色変更 (赤アクセント) */
     background-color: #FF0000;
     color: white;
     border: none;
 }
 button:hover {
-    /* ★ 色変更 */
     background-color: #CC0000;
-    box-shadow: 0 4px 10px rgba(255,0,0,0.3); /* EMSデザインから継承 */
-    transform: translateY(-2px); /* EMSデザインから継承 */
+    box-shadow: 0 4px 10px rgba(255,0,0,0.3);
+    transform: translateY(-2px);
 }
 button:disabled {
-    /* ★ 色変更 */
     background-color: #444;
     color: #999;
     cursor: not-allowed;
@@ -99,18 +91,16 @@ button:disabled {
     border-radius: 4px;
     margin-bottom: 1.5rem;
     
-    /* ★ 色変更 */
     color: #B0B0B0;
     background-color: #252525;
 }
 #currentUserName {
     font-weight: bold;
     font-size: 1rem;
-    /* ★ 色変更 */
     color: #FFFFFF;
 }
 
-/* テキストボタン (ログアウト用) */
+/* ログアウトボタン */
 .text-button {
     background: none;
     border: none;
@@ -120,14 +110,12 @@ button:disabled {
     width: auto; 
     margin-left: 0.5rem;
     
-    /* ★ 色変更 */
     color: #ADD8E6; /* 明るい青 */
     transition: color 0.3s;
 }
 .text-button:hover {
     text-decoration: underline;
     background: none;
-    /* ★ 色変更 */
     color: #FFFFFF;
 }
 
@@ -140,10 +128,8 @@ button:disabled {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
     font-weight: 500;
-    /* ★ 色変更 */
     color: #B0B0B0; /* デフォルトの色 */
 }
-/* ★ 色変更 (ランキング) */
 #rankingList li:nth-child(1) { color: #FFD700; font-weight: bold; } /* 1位 */
 #rankingList li:nth-child(2) { color: #C0C0C0; font-weight: bold; } /* 2位 */
 #rankingList li:nth-child(3) { color: #CD7F32; font-weight: bold; } /* 3位 */
@@ -151,7 +137,6 @@ button:disabled {
 #rankingList li span {
     font-weight: bold;
     margin-left: 0.5rem;
-    /* ★ 色変更 */
     color: #FF0000; /* ピック数は赤 */
 }
 
@@ -189,14 +174,12 @@ button:disabled {
     transition: background-color 0.2s, border-color 0.2s;
     border-radius: 4px; /* 元のスタイルに戻す */
     
-    /* ★ 色変更 */
     background-color: #383838; /* 暗めのグレー */
     color: #FFFFFF; /* 白いテキスト */
     border: 1px solid #555; /* ボーダー */
 }
 
 .quick-add-btn:hover {
-    /* ★ 色変更 */
     background-color: #505050; /* ホバーで少し明るく */
     border-color: #FF0000; /* ホバーで赤のボーダー */
 }
@@ -225,16 +208,14 @@ input[type=number] {
 /* リセットボタンのスタイル */
 #resetButton {
     border: none;
-    /* ★ 色変更 */
     background-color: #555; /* グレー */
     color: white;
 }
 #resetButton:hover {
-    /* ★ 色変更 */
     background-color: #777;
 }
 
-/* ★★★ タブ（入力、ランキング）の幅 ★★★ */
+/* タブの幅 */
 .tab-nav {
     display: flex;
     box-shadow: 0 2px 5px rgba(0,0,0,0.4); /* 影を調整 */
@@ -243,7 +224,6 @@ input[type=number] {
     border-radius: 8px;
     overflow: hidden; 
     
-    /* ★ 色変更 */
     background-color: #1E1E1E; /* カードと同じ背景色 */
     border: 1px solid #333; /* カードと同じボーダー */
 }
@@ -260,18 +240,15 @@ input[type=number] {
     width: 100%;
     border-radius: 0;
     
-    /* ★ 色変更 */
     color: #B0B0B0; /* 非アクティブなタブの文字色 */
     background-color: #1E1E1E;
 }
 
 .tab-btn:hover {
-    /* ★ 色変更 */
     background-color: #2D2D2D; /* ホバーで少し明るく */
     color: #FFFFFF;
 }
 .tab-btn:disabled {
-    /* ★ 色変更 */
     background-color: #222;
     cursor: not-allowed;
     color: #666;
@@ -279,7 +256,6 @@ input[type=number] {
 
 .tab-btn.active {
     background-color: #1E1E1E; /* EMSデザインから変更 */
-    /* ★ 色変更 */
     color: #FF0000; /* アクティブなタブは赤 */
     border-bottom-color: #FF0000; /* 赤い下線 */
 }
