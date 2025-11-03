@@ -42,7 +42,7 @@ header {
     border-radius: 4px;
 }
 
-/* ボタン */
+/* メインのボタン */
 button {
     width: 100%;
     padding: 1rem;
@@ -63,6 +63,38 @@ button:disabled {
     cursor: not-allowed;
 }
 
+/* ログイン中のユーザー情報 */
+.user-info {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: #555;
+    background-color: #f0f0f0;
+    padding: 0.8rem 1rem;
+    border-radius: 4px;
+}
+#currentUserName {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #000;
+}
+
+/* テキストボタン (ログアウト用) */
+.text-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.8rem;
+    width: auto; /* 幅を自動に */
+    margin-left: 0.5rem;
+}
+.text-button:hover {
+    text-decoration: underline;
+    background: none;
+}
+
+
 /* ランキング */
 #rankingList {
     padding-left: 2rem;
@@ -78,7 +110,7 @@ button:disabled {
     margin-left: 0.5rem;
 }
 
-/* メッセージ */
+/* 汎用ヘルパー */
 .hidden {
     display: none;
 }
@@ -87,7 +119,7 @@ button:disabled {
     color: #555;
     margin-top: 1rem;
 }
-#errorMessage {
+.error-message {
     color: #d93025;
     font-weight: bold;
     margin-top: 1rem;

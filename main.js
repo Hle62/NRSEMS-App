@@ -1,28 +1,44 @@
-// ▼▼▼▼▼ 【必須】あなたのGASの「ウェブアプリURL」に書き換えてください ▼▼▼▼▼
+// ▼▼▼▼▼ ご提示いただいたURLに書き換えました ▼▼▼▼▼
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzWEhThIS13xqaFqMIESmZh5L3VsiY4oAuhgFaCxYvYqbvMruQM921ZBQ1_rAv5BzYRSw/exec";
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
+// --- グローバル変数 ---
+let currentLoginName = ""; // ログイン中のユーザー名を保持
+const LOGIN_STORAGE_KEY = "vcrp_app_login_name"; // localStorageのキー
+
 // --- DOM要素の取得 ---
-const nameSelect = document.getElementById("nameSelect");
+// 画面
+const loginScreen = document.getElementById("loginScreen");
+const mainScreen = document.getElementById("mainScreen");
+
+// ログイン画面
+const loginForm = document.getElementById("loginForm");
+const loginNameSelect = document.getElementById("loginNameSelect");
+const loginErrorMessage = document.getElementById("loginErrorMessage");
+
+// メイン画面
 const picksForm = document.getElementById("picksForm");
 const picksInput = document.getElementById("picksInput");
 const submitButton = document.getElementById("submitButton");
 const rankingList = document.getElementById("rankingList");
 const loadingMessage = document.getElementById("loadingMessage");
 const errorMessage = document.getElementById("errorMessage");
+const currentUserName = document.getElementById("currentUserName");
+const logoutButton = document.getElementById("logoutButton");
 
 // --- 起動時の処理 ---
 document.addEventListener("DOMContentLoaded", () => {
     // 1. アプリ起動時に初期データをGASから取得
     fetchInitialData();
 
-    // 2. フォーム送信（ピック数送信）のイベント
+    // 2. ログインフォームのイベント
+    loginForm.addEventListener("submit", handleLogin);
+    
+    // 3. ピック数送信フォームのイベント
     picksForm.addEventListener("submit", handleSubmit);
     
-    // 3. 名前を変更したらlocalStorageに保存（ログイン維持）
-    nameSelect.addEventListener("change", (e) => {
-        saveLoginName(e.target.value);
-    });
+    // 4. ログアウト（名前変更）ボタンのイベント
+    logoutButton.addEventListener("click", handleLogout);
 });
 
 /**
@@ -38,31 +54,69 @@ async function fetchInitialData() {
 
         const data = result.data;
 
-        // 1-1. 社員名リストをドロップダウンに設定
+        // 1-1. 社員名リストを「ログイン画面のドロップダウン」に設定
         updateNameSelect(data.names);
         
-        // 1-2. 保存された名前（ログイン情報）を復元
-        loadLoginName();
-
-        // 1-3. ランキングを表示
+        // 1-2. ランキングを表示
         updateRanking(data.ranking);
+        
+        // 1-3. 保存された名前（ログイン情報）をチェック
+        checkLoginStatus();
 
     } catch (error) {
-        showError("初期データの読み込みに失敗しました: " + error.message);
+        showError("初期データの読み込みに失敗しました: " + error.message, "login");
+        showError("初期データの読み込みに失敗しました: " + error.message, "main");
     }
 }
 
 /**
- * 2. フォーム送信（ピック数送信）の処理
+ * 1-3. ログイン状態をチェックし、画面を切り替える
+ */
+function checkLoginStatus() {
+    const savedName = localStorage.getItem(LOGIN_STORAGE_KEY);
+    if (savedName) {
+        // ログイン情報あり
+        currentLoginName = savedName;
+        currentUserName.textContent = savedName; // メイン画面の名前表示を更新
+        showMainScreen(); // メイン画面へ
+    } else {
+        // ログイン情報なし
+        showLoginScreen(); // ログイン画面へ
+    }
+}
+
+/**
+ * 2. ログイン処理 (ログインボタン押下時)
+ */
+function handleLogin(e) {
+    e.preventDefault();
+    const selectedName = loginNameSelect.value;
+
+    if (!selectedName) {
+        showError("名前を選択してください。", "login");
+        return;
+    }
+
+    // ログイン情報を保存
+    currentLoginName = selectedName;
+    localStorage.setItem(LOGIN_STORAGE_KEY, selectedName);
+    
+    // メイン画面に切り替え
+    currentUserName.textContent = selectedName;
+    showMainScreen();
+}
+
+/**
+ * 3. フォーム送信（ピック数送信）の処理
  */
 async function handleSubmit(e) {
     e.preventDefault(); // フォームのデフォルト送信をキャンセル
 
-    const name = nameSelect.value;
     const picks = picksInput.value;
 
-    if (!name) {
-        showError("名前が選択されていません。");
+    if (!currentLoginName) {
+        showError("ログイン情報がありません。再度ログインしてください。", "main");
+        handleLogout(); // 強制的にログアウト
         return;
     }
     
@@ -70,7 +124,7 @@ async function handleSubmit(e) {
 
     try {
         const postData = {
-            name: name,
+            name: currentLoginName, // ログイン中の名前を使う
             picks: picks
         };
         
@@ -89,39 +143,52 @@ async function handleSubmit(e) {
         const result = await response.json();
         if (result.status === "error") throw new Error(result.message);
 
-        // 2-1. 送信成功したら入力欄をクリア
+        // 3-1. 送信成功したら入力欄をクリア
         picksInput.value = "";
         
-        // 2-2. 最新のランキングに更新
+        // 3-2. 最新のランキングに更新
         updateRanking(result.data);
 
     } catch (error) {
-        showError("送信に失敗しました: " + error.message);
+        showError("送信に失敗しました: " + error.message, "main");
     } finally {
         setLoading(false); // 送信中表示を解除
     }
 }
 
+/**
+ * 4. ログアウト処理 (名前変更ボタン押下時)
+ */
+function handleLogout() {
+    // 保存した名前を削除
+    localStorage.removeItem(LOGIN_STORAGE_KEY);
+    currentLoginName = "";
+    
+    // ログイン画面に戻す
+    showLoginScreen();
+}
+
+
 // --- 画面更新用のヘルパー関数 ---
 
 /**
- * 社員名リストをドロップダウンに設定
+ * 社員名リストを「ログイン画面のドロップダウン」に設定
  */
 function updateNameSelect(names) {
-    nameSelect.innerHTML = ""; // 「読み込み中...」をクリア
+    loginNameSelect.innerHTML = ""; // 「読み込み中...」をクリア
     
     // 空の選択肢
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "名前を選んでください";
-    nameSelect.appendChild(defaultOption);
+    loginNameSelect.appendChild(defaultOption);
 
     // 社員名を追加
     names.forEach(name => {
         const option = document.createElement("option");
         option.value = name;
         option.textContent = name;
-        nameSelect.appendChild(option);
+        loginNameSelect.appendChild(option);
     });
 }
 
@@ -136,37 +203,31 @@ function updateRanking(rankingData) {
         return;
     }
 
-    // 上位3名だけ（または3名未満なら全員）を表示
+    // 上位3名だけ
     const top3 = rankingData.slice(0, 3);
 
-    top3.forEach((item, index) => {
+    top3.forEach((item) => {
         const li = document.createElement("li");
         
-        // 日本円表記にカンマ区切りでフォーマット
-        const formattedPay = item.pay.toLocaleString(); 
-
-        // 表示内容を「ピック数」と「金額」に変更
-        li.innerHTML = `${item.name} <span>${item.picks} ピック / ${formattedPay} 円</span>`;
+        // 金額表示を削除
+        li.innerHTML = `${item.name} <span>${item.picks} ピック</span>`;
         rankingList.appendChild(li);
     });
 }
 
-/**
- * ログイン名（最後に選んだ名前）をlocalStorageに保存
- */
-function saveLoginName(name) {
-    localStorage.setItem("vcrp_app_login_name", name);
+// 画面切り替え
+function showLoginScreen() {
+    loginScreen.classList.remove("hidden");
+    mainScreen.classList.add("hidden");
+}
+function showMainScreen() {
+    loginScreen.classList.add("hidden");
+    mainScreen.classList.remove("hidden");
+    // メイン画面表示時にエラーをクリア
+    showError("", "main");
+    picksInput.value = ""; // 入力欄をクリア
 }
 
-/**
- * ログイン名をlocalStorageから読み込んでドロップダウンに設定
- */
-function loadLoginName() {
-    const savedName = localStorage.getItem("vcrp_app_login_name");
-    if (savedName) {
-        nameSelect.value = savedName;
-    }
-}
 
 /**
  * 送信中・エラー表示の制御
@@ -182,7 +243,14 @@ function setLoading(isLoading) {
     }
 }
 
-function showError(message) {
-    errorMessage.textContent = "※ " + message;
-    errorMessage.classList.remove("hidden");
+// type: "login" | "main"
+function showError(message, type) {
+    const element = (type === "login") ? loginErrorMessage : errorMessage;
+    if (message) {
+        element.textContent = "※ " + message;
+        element.classList.remove("hidden");
+    } else {
+        element.textContent = "";
+        element.classList.add("hidden");
+    }
 }
