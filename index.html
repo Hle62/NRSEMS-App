@@ -42,7 +42,16 @@
                 <form id="picksForm">
                     <div class="form-group">
                         <label for="picksInput">ピック数:</label>
-                        <input type="number" id="picksInput" placeholder="数値を入力" required>
+                        
+                        <div class="input-with-buttons">
+                            <input type="number" id="picksInput" placeholder="数値を入力" required>
+                            <div class="quick-add-buttons">
+                                <button type="button" class="quick-add-btn" data-value="1">+1</button>
+                                <button type="button" class="quick-add-btn" data-value="5">+5</button>
+                                <button type="button" class="quick-add-btn" data-value="10">+10</button>
+                            </div>
+                        </div>
+                        
                     </div>
                     <button type="submit" id="submitButton">送信</button>
                     <p id="errorMessage" class="error-message hidden"></p>

@@ -114,13 +114,52 @@ button:disabled {
 .hidden {
     display: none;
 }
-#loadingMessage {
-    text-align: center;
-    color: #555;
-    margin-top: 1rem;
-}
 .error-message {
     color: #d93025;
     font-weight: bold;
     margin-top: 1rem;
+}
+
+/* --- ピック数加算ボタン用のスタイル --- */
+
+.input-with-buttons {
+    display: flex;
+    flex-direction: column; /* 縦並び */
+    gap: 0.5rem; /* 隙間 */
+}
+
+.quick-add-buttons {
+    display: flex;
+    gap: 0.5rem; /* ボタン同士の隙間 */
+}
+
+/* 加算ボタンのスタイル */
+.quick-add-btn {
+    /* デフォルトのbuttonスタイルを上書き */
+    width: auto; /* 幅を自動に */
+    flex: 1; /* 均等に幅を分ける */
+    padding: 0.7rem 0.5rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background-color: #e9ecef; /* 背景色 */
+    color: #495057; /* 文字色 */
+    border: 1px solid #ced4da; /* 枠線 */
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.quick-add-btn:hover {
+    background-color: #d1d9e0; /* ホバー色 */
+}
+
+/* type="number" のスピンボタンを非表示 (任意) */
+/* Chrome, Safari */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
