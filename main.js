@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * 1. アプリ起動時に初期データをGASから取得
- * ★★★ この関数を修正 ★★★
  */
 async function fetchInitialData() {
     try {
@@ -79,7 +78,7 @@ async function fetchInitialData() {
         showError("初期データの読み込みに失敗しました: " + error.message, "login");
         showError("初期データの読み込みに失敗しました: " + error.message, "main");
     } finally {
-        // ★★★ 失敗しても成功しても、必ず画面切り替え処理を呼ぶ ★★★
+        // ★ 失敗しても成功しても、必ず画面切り替え処理を呼ぶ
         checkLoginStatus();
     }
 }
@@ -226,12 +225,15 @@ function updateNameSelect(names) {
     defaultOption.textContent = "名前を選んでください";
     loginNameSelect.appendChild(defaultOption);
 
-    names.forEach(name => {
-        const option = document.createElement("option");
-        option.value = name;
-        option.textContent = name;
-        loginNameSelect.appendChild(option);
-    });
+    // 読み込みに失敗した（namesがundefined）場合への対応
+    if (names && names.length > 0) {
+        names.forEach(name => {
+            const option = document.createElement("option");
+            option.value = name;
+            option.textContent = name;
+            loginNameSelect.appendChild(option);
+        });
+    }
 }
 
 function updateRanking(rankingData) {
