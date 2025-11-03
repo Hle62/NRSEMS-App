@@ -26,27 +26,14 @@ const tabContents = document.querySelectorAll(".tab-content");
 
 // --- 起動時の処理 ---
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. アプリ起動時に初期データをGASから取得
     fetchInitialData();
-
-    // 2. ログインフォームのイベント
     loginForm.addEventListener("submit", handleLogin);
-    
-    // 3. ピック数送信フォームのイベント
     picksForm.addEventListener("submit", handleSubmit);
-    
-    // 4. ログアウトボタンのイベント
     logoutButton.addEventListener("click", handleLogout);
-
-    // 5. クイック追加ボタンのイベント
     quickAddButtons.forEach(button => {
         button.addEventListener("click", handleQuickAdd);
     });
-    
-    // 6. リセットボタンのイベント
     resetButton.addEventListener("click", handleReset);
-
-    // 7. タブ切り替えのイベント
     tabButtons.forEach(button => {
         button.addEventListener("click", handleTabClick);
     });
@@ -54,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * 1. アプリ起動時に初期データをGASから取得
+ * (変更なし)
  */
 async function fetchInitialData() {
     try {
@@ -71,13 +59,13 @@ async function fetchInitialData() {
         showError("初期データの読み込みに失敗しました: " + error.message, "login");
         showError("初期データの読み込みに失敗しました: " + error.message, "main");
     } finally {
-        // ログイン状態をチェック
         checkLoginStatus();
     }
 }
 
 /**
  * 1-3. ログイン状態をチェックし、画面を切り替える
+ * (変更なし)
  */
 function checkLoginStatus() {
     const savedName = localStorage.getItem(LOGIN_STORAGE_KEY);
@@ -93,11 +81,11 @@ function checkLoginStatus() {
 
 /**
  * 2. ログイン処理
+ * (変更なし)
  */
 function handleLogin(e) {
     e.preventDefault();
     const selectedName = loginNameSelect.value;
-
     if (!selectedName) {
         showError("名前を選択してください。", "login");
         return;
@@ -110,6 +98,7 @@ function handleLogin(e) {
 
 /**
  * 3. フォーム送信（ピック数送信）の処理
+ * ★★★ この関数を修正 ★★★
  */
 async function handleSubmit(e) {
     e.preventDefault();
@@ -126,7 +115,7 @@ async function handleSubmit(e) {
         return;
     }
     
-    setLoading(true);
+    setLoading(true); // 1. 「送信中...」開始
 
     try {
         const postData = {
@@ -145,18 +134,25 @@ async function handleSubmit(e) {
         const result = await response.json();
         if (result.status === "error") throw new Error(result.message);
 
-        picksInput.value = "";
-        updateRanking(result.data);
+        // ★ 2. 送信成功！
+        picksInput.value = ""; // 入力欄をクリア
+        setLoading(false); // ★ 3. 「送信中...」をすぐに解除
+        
+        // ★ 4. バックグラウンドでランキングを再取得
+        showError("送信完了。ランキングを更新します...", "main"); // ユーザーに通知
+        await fetchInitialData(); // doGetを再度呼び出し、ランキングと名前を更新
+        showError("", "main"); // 通知をクリア
 
     } catch (error) {
         showError("送信に失敗しました: " + error.message, "main");
-    } finally {
-        setLoading(false);
+        setLoading(false); // ★ エラー時も「送信中」を解除
     }
+    // ★ 'finally' ブロックは不要になった
 }
 
 /**
  * 4. ログアウト処理
+ * (変更なし)
  */
 function handleLogout() {
     localStorage.removeItem(LOGIN_STORAGE_KEY);
@@ -166,6 +162,7 @@ function handleLogout() {
 
 /**
  * 5. ピック数クイック追加
+ * (変更なし)
  */
 function handleQuickAdd(e) {
     const valueToAdd = parseInt(e.target.dataset.value, 10);
@@ -179,6 +176,7 @@ function handleQuickAdd(e) {
 
 /**
  * 6. リセット処理
+ * (変更なし)
  */
 function handleReset() {
     picksInput.value = "";
@@ -187,6 +185,7 @@ function handleReset() {
 
 /**
  * 7. タブ切り替え処理
+ * (変更なし)
  */
 function handleTabClick(e) {
     const clickedTab = e.currentTarget.dataset.tab;
@@ -210,7 +209,7 @@ function handleTabClick(e) {
 
 
 // --- 画面更新用のヘルパー関数 ---
-
+// (変更なし)
 function updateNameSelect(names) {
     loginNameSelect.innerHTML = ""; 
     
@@ -246,7 +245,6 @@ function updateRanking(rankingData) {
     });
 }
 
-// 画面切り替え
 function showLoginScreen() {
     loginScreen.classList.remove("hidden");
     mainScreen.classList.add("hidden");
