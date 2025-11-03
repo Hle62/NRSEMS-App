@@ -2,21 +2,30 @@
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzWEhThIS13xqaFqMIESmZh5L3VsiY4oAuhgFaCxYvYqbvMruQM921ZBQ1_rAv5BzYRSw/exec";
 // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+// ★ 【要編集】社員リストをここにハードコードする ★
+// ★ スプシのA列と必ず一致させてください       ★
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+const EMPLOYEE_LIST = [
+    "水瀬 瑠夏", // スプシのA2
+    "社員A",     // スプシのA3
+    "社員B",     // スプシのA4
+    "社員C"      // スプシのA5 (必要なだけ追加)
+    // (例: "田中 太郎", "鈴木 一郎")
+];
+// ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+
+
 // --- グローバル変数 ---
 let currentLoginName = "";
 const LOGIN_STORAGE_KEY = "vcrp_app_login_name";
 
 // --- DOM要素の取得 ---
-// 画面
 const loginScreen = document.getElementById("loginScreen");
 const mainScreen = document.getElementById("mainScreen");
-
-// ログイン画面
 const loginForm = document.getElementById("loginForm");
 const loginNameSelect = document.getElementById("loginNameSelect");
 const loginErrorMessage = document.getElementById("loginErrorMessage");
-
-// メイン画面
 const picksForm = document.getElementById("picksForm");
 const picksInput = document.getElementById("picksInput");
 const submitButton = document.getElementById("submitButton");
@@ -26,14 +35,15 @@ const currentUserName = document.getElementById("currentUserName");
 const logoutButton = document.getElementById("logoutButton");
 const resetButton = document.getElementById("resetButton");
 const quickAddButtons = document.querySelectorAll(".quick-add-btn");
-
-// タブ関連のDOM取得
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabContents = document.querySelectorAll(".tab-content");
 
 // --- 起動時の処理 ---
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. アプリ起動時に初期データをGASから取得
+    // ★ 対策②：ハードコードしたリストで先に画面を構築
+    updateNameSelect(EMPLOYEE_LIST);
+    
+    // 1. GASから「ランキングデータのみ」を取得
     fetchInitialData();
 
     // 2. ログインフォームのイベント
@@ -61,24 +71,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /**
  * 1. アプリ起動時に初期データをGASから取得
+ * ★ 対策②：社員リスト取得のロジックを削除し、ランキング取得のみにする
  */
 async function fetchInitialData() {
     try {
-        const response = await fetch(GAS_API_URL);
+        const response = await fetch(GAS_API_URL); // doGet
         if (!response.ok) throw new Error("サーバーとの通信に失敗しました。");
 
         const result = await response.json();
         if (result.status === "error") throw new Error(result.message);
 
-        const data = result.data;
-        updateNameSelect(data.names);
-        updateRanking(data.ranking); // ランキングは裏で更新しておく
+        // result.data が「ランキング配列」そのものになる
+        updateRanking(result.data);
 
     } catch (error) { 
-        showError("初期データの読み込みに失敗しました: " + error.message, "login");
-        showError("初期データの読み込みに失敗しました: " + error.message, "main");
+        showError("ランキングの読み込みに失敗しました: " + error.message, "main");
     } finally {
-        // 失敗しても成功しても、必ず画面切り替え処理を呼ぶ
+        // ログイン状態をチェック（これはGAS通信と無関係に実行）
         checkLoginStatus();
     }
 }
@@ -88,11 +97,14 @@ async function fetchInitialData() {
  */
 function checkLoginStatus() {
     const savedName = localStorage.getItem(LOGIN_STORAGE_KEY);
-    if (savedName) {
+    // ★ 対策②：ハードコードしたリストに名前が存在するか確認
+    if (savedName && EMPLOYEE_LIST.includes(savedName)) {
         currentLoginName = savedName;
         currentUserName.textContent = savedName;
         showMainScreen();
     } else {
+        // 保存された名前が無効か、リストにない場合はログアウト
+        localStorage.removeItem(LOGIN_STORAGE_KEY);
         showLoginScreen();
     }
 }
@@ -141,7 +153,7 @@ async function handleSubmit(e) {
         };
         
         const response = await fetch(GAS_API_URL, {
-            method: "POST",
+            method: "POST", // doPost
             mode: "cors",
             body: JSON.stringify(postData), 
         });
@@ -152,6 +164,7 @@ async function handleSubmit(e) {
         if (result.status === "error") throw new Error(result.message);
 
         picksInput.value = "";
+        // ★ 対策②：doPostからも最新のランキングが返ってくる
         updateRanking(result.data);
 
     } catch (error) {
@@ -217,15 +230,18 @@ function handleTabClick(e) {
 
 // --- 画面更新用のヘルパー関数 ---
 
+/**
+ * 社員名リストをドロップダウンに設定
+ * (★ 対策②： "読み込み中..." を削除)
+ */
 function updateNameSelect(names) {
-    loginNameSelect.innerHTML = "";
+    loginNameSelect.innerHTML = ""; // クリア
     
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.textContent = "名前を選んでください";
     loginNameSelect.appendChild(defaultOption);
 
-    // 読み込みに失敗した（namesがundefined）場合への対応
     if (names && names.length > 0) {
         names.forEach(name => {
             const option = document.createElement("option");
@@ -238,7 +254,6 @@ function updateNameSelect(names) {
 
 /**
  * ランキング（Top 3）を表示
- * ★★★ この関数を修正 ★★★
  */
 function updateRanking(rankingData) {
     rankingList.innerHTML = "";
@@ -252,7 +267,6 @@ function updateRanking(rankingData) {
 
     top3.forEach((item) => {
         const li = document.createElement("li");
-        // ★ 単位を「ピック」から「人」に変更
         li.innerHTML = `${item.name} <span>${item.picks} 人</span>`;
         rankingList.appendChild(li);
     });
