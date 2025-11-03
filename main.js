@@ -25,9 +25,7 @@ const errorMessage = document.getElementById("errorMessage");
 const currentUserName = document.getElementById("currentUserName");
 const logoutButton = document.getElementById("logoutButton");
 
-// ★★★ 追加 ★★★
 const resetButton = document.getElementById("resetButton");
-//
 const quickAddButtons = document.querySelectorAll(".quick-add-btn");
 
 // --- 起動時の処理 ---
@@ -49,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
         button.addEventListener("click", handleQuickAdd);
     });
     
-    // ★★★ 追加 ★★★
     // 6. リセットボタンのイベント
     resetButton.addEventListener("click", handleReset);
 });
@@ -76,7 +73,8 @@ async function fetchInitialData() {
         // 1-3. ログイン情報をチェック
         checkLoginStatus();
 
-    } catch (error {
+    // ★★★ エラーを修正: catch (error { ではなく (error) ★★★
+    } catch (error) { 
         showError("初期データの読み込みに失敗しました: " + error.message, "login");
         showError("初期データの読み込みに失敗しました: " + error.message, "main");
     }
@@ -184,7 +182,6 @@ function handleQuickAdd(e) {
 }
 
 /**
- * ★★★ 追加 ★★★
  * 6. リセット処理
  */
 function handleReset() {
