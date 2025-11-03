@@ -12,16 +12,16 @@ header {
     color: #444;
 }
 
-/* カードレイアウト */
+/* ★★★ カード（ピック数入力など）の幅 ★★★ */
 .card {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 500px; /* ← 幅を500pxに */
+    margin-left: auto; /* ← 中央揃え */
+    margin-right: auto; /* ← 中央揃え */
 }
 
 /* フォーム */
@@ -37,7 +37,7 @@ header {
 .form-group select {
     width: 100%;
     padding: 0.8rem;
-    box-sizing: border-box; /* paddingを含めて幅100%に */
+    box-sizing: border-box; 
     border: 1px solid #ccc;
     border-radius: 4px;
 }
@@ -85,7 +85,7 @@ button:disabled {
     cursor: pointer;
     padding: 0;
     font-size: 0.8rem;
-    width: auto; /* 幅を自動に */
+    width: auto; 
     margin-left: 0.5rem;
 }
 .text-button:hover {
@@ -109,7 +109,7 @@ button:disabled {
     margin-left: 0.5rem;
 }
 
-/* 汎用ヘルパー (★これが重要) */
+/* 汎用ヘルパー (画面を隠す) */
 .hidden {
     display: none;
 }
@@ -123,34 +123,32 @@ button:disabled {
 
 .input-with-buttons {
     display: flex;
-    flex-direction: column; /* 縦並び */
-    gap: 0.5rem; /* 隙間 */
+    flex-direction: column; 
+    gap: 0.5rem; 
 }
 
 .quick-add-buttons {
     display: flex;
-    gap: 0.5rem; /* ボタン同士の隙間 */
+    gap: 0.5rem; 
 }
 
-/* 加算ボタンのスタイル */
 .quick-add-btn {
-    width: auto; /* 幅を自動に */
-    flex: 1; /* 均等に幅を分ける */
+    width: auto; 
+    flex: 1; 
     padding: 0.7rem 0.5rem;
     font-size: 0.9rem;
     font-weight: bold;
-    background-color: #e9ecef; /* 背景色 */
-    color: #495057; /* 文字色 */
-    border: 1px solid #ced4da; /* 枠線 */
+    background-color: #e9ecef; 
+    color: #495057; 
+    border: 1px solid #ced4da; 
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
 .quick-add-btn:hover {
-    background-color: #d1d9e0; /* ホバー色 */
+    background-color: #d1d9e0; 
 }
 
-/* type="number" のスピンボタンを非表示 */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none;
@@ -163,17 +161,17 @@ input[type=number] {
 /* 送信・リセットボタンのコンテナ */
 .form-actions {
     display: flex;
-    gap: 0.5rem; /* ボタン間の隙間 */
+    gap: 0.5rem; 
 }
 
 .form-actions button {
-    flex: 1; /* 均等に幅を分ける */
+    flex: 1; 
     width: 100%;
 }
 
 /* リセットボタンのスタイル */
 #resetButton {
-    background-color: #6c757d; /* グレー */
+    background-color: #6c757d; 
     color: white;
     border: none;
 }
@@ -181,27 +179,26 @@ input[type=number] {
     background-color: #5a6268;
 }
 
-/* --- タブ切り替え用のスタイル --- */
-
+/* ★★★ タブ（入力、ランキング）の幅 ★★★ */
 .tab-nav {
     display: flex;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 500px;
-    margin: 0 auto 1.5rem auto; /* headerの下、cardの上 */
+    max-width: 500px; /* ← 幅を500pxに */
+    margin: 0 auto 1.5rem auto; /* ← 中央揃え */
     border-radius: 8px;
-    overflow: hidden; /* 角丸を効かせるため */
+    overflow: hidden; 
 }
 
 .tab-btn {
-    flex: 1; /* 均等幅 */
+    flex: 1; 
     padding: 1rem;
     font-size: 1rem;
     font-weight: bold;
     color: #007bff;
     background-color: #fff;
     border: none;
-    border-bottom: 3px solid transparent; /* 非アクティブ時 */
+    border-bottom: 3px solid transparent; 
     cursor: pointer;
     transition: all 0.2s;
     width: 100%;
@@ -216,19 +213,17 @@ input[type=number] {
     cursor: not-allowed;
 }
 
-/* アクティブなタブボタン */
 .tab-btn.active {
     color: #0056b3;
-    border-bottom-color: #007bff; /* アクティブな下線 */
+    border-bottom-color: #007bff; 
     background-color: #fff;
 }
 
 /* タブコンテンツ */
 .tab-content {
-    display: none; /* デフォルトは非表示 */
+    display: none; 
 }
 
-/* アクティブなタブコンテンツ */
 .tab-content.active {
-    display: block; /* アクティブなものだけ表示 */
+    display: block; 
 }
